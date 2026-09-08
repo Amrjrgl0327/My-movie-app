@@ -2,12 +2,17 @@
 import React from "react";
 import { MovieCard } from "./MovieCard";
 
-const MovieSection = ({ sectionName, movieData }) => {
+const MovieSection = ({
+  sectionName,
+  upcoming,
+  popular,
+  top_Rated,
+  movieData,
+}) => {
   return (
     <div className="w-screen px-[80]">
       <div className="flex w-full justify-between">
         <p>{sectionName}</p>
-        <img className="w-[74] h-[30] gap-1" src="/Button(1).png" />
       </div>
       <div className="flex gap-8 flex-wrap">
         {movieData.map((movie) => {

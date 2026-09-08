@@ -1,24 +1,36 @@
-export const Header = () => {
+"use client";
+
+import { Button } from "@base-ui/react";
+
+export const Header = ({ movie, onNext }) => {
   return (
-    <div>
+    <div className="w-screen h-fit relative object-cover">
       <img
-        className="w-screen h-fit relative object-cover"
-        src="/Feature.png"
+        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+        alt={movie.title}
       />
+
       <div className="flex flex-col items-start absolute -translate-10 top-48 mt-[178] ml-[140] mb-[158] gap-4  w-[404]  text-white">
-        <div>Now Playing:</div>
-        <h1 className="font-bold">Wicked</h1>
-        <div className="flex">
+        <p className="font-[Inter] text-[16] font-normal">Now Playing:</p>
+        <h1 className="font-[Inter] text-[36px] font-bold">{movie.title}</h1>
+        <p className="flex gap-1 ml-1 mt-2">
           <img src="/star.png" />
-          <img src="10.png" />
-        </div>
-        <p className="w-[320] h-[80] size-[8]]">
-          Elphaba, a misunderstood young woman because of her green skin, and
-          Glinda, a popular girl, become friends at Shiz University in the Land
-          of Oz. After an encounter with the Wonderful Wizard of Oz, their
-          friendship reaches a crossroads.
+
+          <p>{movie.vote_average.toFixed(1)} / 10</p>
         </p>
-        <img className="w-[89] h-[20] rounded-md mb-[120]" src="/button.png" />
+        <p className="font-[Inter] text-[12] font-normal">{movie.overview}</p>
+        <img className="w-[145] h-[40] rounded-md mb-[120]" src="/button.png" />
+      </div>
+      <div>
+        <Button
+          onClick={onNext}
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-10 "
+        >
+          <img
+            className="rounded-full bg-white w-[40] h-[40]"
+            src="/Right.png"
+          />
+        </Button>
       </div>
     </div>
   );

@@ -1,25 +1,16 @@
 "use client";
+import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 
-export const MovieCard = ({ imgSrc, rating, title, id }) => {
-  const router = useRouter();
+export const MovieCard = (props) => {
   return (
-    <div
-      onClick={() => router.push(`/movie/${id}`)}
-      className="flex flex-col flex-wrap w-[230] h-[439] bg-gray-200"
-    >
-      <img src={imgSrc} alt="movie Image" width={230} height={340} />
-
-      <p className="flex gap-1 ml-1 mt-2">
-        <img src="/star.png" />
-        {rating}{" "}
-        <span className="text-muted-foreground items-center justify-center">
-          /10
-        </span>
-      </p>
-
-      <p className="flex items-center ml-2">{title}</p>
+    <div className="w-full aspect-3/4 relative rounded-lg shadow overflow-hidden">
+      <Image
+        alt={props.title}
+        fill
+        src={"https://image.tmdb.org/t/p/original" + props.poster_path}
+      />
     </div>
   );
 };

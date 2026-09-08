@@ -1,6 +1,7 @@
 "use client";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
-import React from "react";
 import { Header } from "@/components/Header";
 import { Import } from "lucide-react";
 import { Grid } from "@/components/Grid";
@@ -8,6 +9,7 @@ import { MovieCard } from "@/components/MovieCard";
 import MovieSection from "@/components/MovieSection";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation";
+import { PopularMovies } from "@/components/PopularMovies";
 
 const movieData = [
   {
@@ -370,22 +372,23 @@ const movieData = [
     vote_count: 22960,
   },
 ];
+
 const page = () => {
-  // const upcomingMovies = await getMovies("upcoming");
-  // const PopularMovies = await getMovies("Popular");
-  // const top_RatedMovies = await getMovies("top_rated");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentMovie = movieData[currentIndex];
+
   return (
     <div>
       <Navigation />
-      <Header />
-      {/* <Grid /> */}
-      {/* <MovieCard imgSrc={"/Slide.png"} rating={"6.4"} title={"Dear Santa"} /> */}
 
-      {/* <MovieCard /> */}
+      <Header
+        movie={currentMovie}
+        onNext={() => setCurrentIndex((prev) => (prev + 1) % movieData.length)}
+      />
+      <PopularMovies />
+      <MovieCard />
+      {/* <MovieSection sectionName={"Popular"} movieData={movieData} /> */}
 
-      <MovieSection sectionName={"Upcoming"} movieData={movieData} />
-      {/* <MovieSection sectionName={"Popular"} movieData={"PopularMovies"} />
-      <MovieSection sectionName="Top Rated" movieData={"top_RatedMovies"} /> */}
       <Footer />
     </div>
   );

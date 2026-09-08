@@ -17,6 +17,9 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import * as React from "react";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 
 const genres = [
   "Action",
@@ -48,13 +51,14 @@ const genres = [
 ];
 
 export const Navigation = () => {
+  const { theme, setTheme } = useTheme();
   return (
     <div className="flex justify-between p-4 px-4 py-4 w-screen items-center h-[59] mt-[12] mr-[80]">
       <div className=" flex items-center gap-4 ml-[80]">
         <img src="/film.png" />
         <img className="" src="/Movie Z.png" />
       </div>
-      <div className="flex gap-3">
+      <div className="flex px-[330] py-[280] gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
@@ -89,16 +93,34 @@ export const Navigation = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <InputGroup className="max-w-xs">
+        <InputGroup className="max-w-xs w-[379] h-[36]">
           <InputGroupInput placeholder="Search..." />
           <InputGroupAddon>
             <Search />
           </InputGroupAddon>
         </InputGroup>
-
-        <div>
-          <img src="/Modes.png" />
-        </div>
+      </div>
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              Dark
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>
+              System
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
