@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
-  reactCompiler: true,
+  images: {
+    remotePatterns: [new URL("https://image.tmdb.org/**")],
+  },
+  env: {
+    ACCESS_TOKEN: process.env.ACCESS_TOKEN,
+  },
 };
 
 export default nextConfig;

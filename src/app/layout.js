@@ -24,9 +24,9 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          {children}
-        </ThemeProvider>
+        {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> */}
+        {children}
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

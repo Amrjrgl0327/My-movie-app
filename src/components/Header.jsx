@@ -1,8 +1,47 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import { Button } from "@base-ui/react";
 
-export const Header = ({ movie, onNext }) => {
+export const Header = () => {
+  const [movies, setMovies] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState([0]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const getMovies = async () => {
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/movie/now_playing?language=en-US",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + process.env.ACCESS_TOKEN,
+            },
+          },
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+        setMovies(data.results);
+
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+
+        setIsLoading(false);
+      }
+    };
+
+    getMovies();
+  }, []);
+
+  if (isLoading || movies.length === 0) return null;
+  const movie = movies[currentIndex];
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % movies.length);
+  };
+
   return (
     <div className="w-screen h-fit relative object-cover">
       <img
@@ -10,7 +49,7 @@ export const Header = ({ movie, onNext }) => {
         alt={movie.title}
       />
 
-      <div className="flex flex-col items-start absolute -translate-10 top-48 mt-[178] ml-[140] mb-[158] gap-4  w-[404]  text-white">
+      <div className="flex flex-col items-start absolute -translate-10 top-48 mt-[220] ml-[140] mb-[158] gap-4  w-[404]  text-white">
         <p className="font-[Inter] text-[16] font-normal">Now Playing:</p>
         <h1 className="font-[Inter] text-[36px] font-bold">{movie.title}</h1>
         <p className="flex gap-1 ml-1 mt-2">
@@ -23,7 +62,7 @@ export const Header = ({ movie, onNext }) => {
       </div>
       <div>
         <Button
-          onClick={onNext}
+          onClick={handleNext}
           className="absolute right-6 top-1/2 -translate-y-1/2 z-10 "
         >
           <img
