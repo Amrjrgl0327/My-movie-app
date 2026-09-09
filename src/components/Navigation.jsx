@@ -1,4 +1,6 @@
 "use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,7 +53,44 @@ const genres = [
 ];
 
 export const Navigation = () => {
-  const { theme, setTheme } = useTheme();
+ const { setTheme } = useTheme()
+
+  const [genres, setGenres] = useState([]);
+  const router = useRouter();
+
+  useEffect (() => {
+    const getGenres = async () => {
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/genre/movie/list?language=en",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
+            },
+          },
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+        setGenres(data.genres);
+
+      } catch (err) {
+        console.error(err);
+
+       
+      }
+    };
+
+    getGenres();
+  }, []);
+
+  const handleGenreClick = (id) => {
+    router.push(`/genre/${id}`);
+  };
+
   return (
     <div className="flex justify-between p-4 px-4 py-4 w-screen items-center h-[59] mt-[12] mr-[80]">
       <div className=" flex items-center gap-4 ml-[80]">
@@ -60,35 +99,31 @@ export const Navigation = () => {
       </div>
       <div className="flex px-[330] py-[280] gap-3">
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
+          <DropdownMenuTrigger asChild>
+            
               <Button variant="outline">
                 <img src="/down.png" />
                 Genre
               </Button>
-            }
-          />
+              </DropdownMenuTrigger>
+             
+              
+          
 
           <DropdownMenuContent className="flex items-start w-[577] h-[333] p-4">
             <DropdownMenuGroup>
-              <DropdownMenu>Genres</DropdownMenu>
+              <p className="font-semibold">Genres</p>
               <DropdownMenuLabel>
                 See lists of movies by genre
               </DropdownMenuLabel>
-              <div className="grid grid-cols-5 px-4 py-3 gap-5">
-                {genres.map((genre) => {
-                  return (
-                    <Badge
-                      key={genre}
-                      variant="outline"
-                      className="flex cursor-pointer items-center gap-1 font-bold"
-                    >
-                      {genre}
-                      <ArrowRight className="h-3 w-3" />
-                    </Badge>
-                  );
-                })}
+              <div className="grid grid-cols-5 gap-2 p-4">
+                {genres.map((g) => (
+                <button key={g.id} onClick={() => handleGenreClick(g.id)}>
+                  {g.name} &gt;
+                </button>
+                ))}
               </div>
+              
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -118,9 +153,7 @@ export const Navigation = () => {
             <DropdownMenuItem onClick={() => setTheme("dark")}>
               Dark
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              System
-            </DropdownMenuItem>
+           
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

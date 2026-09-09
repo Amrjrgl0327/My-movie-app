@@ -10,14 +10,16 @@ import { useRouter } from "next/navigation";
 import { PopularMovies } from "@/components/PopularMovies";
 import { TopRatedMovies } from "@/components/TopRatedMovies";
 import { UpcomingMovies } from "@/components/UpcomingMovies";
+import { Navbar } from "@/components/Navbar";
 
 const page = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
     <div>
-      <Navigation />
-      <Header />
+      <Navbar />
+     <Header />
+      
       <UpcomingMovies />
       <PopularMovies />
       <TopRatedMovies />
