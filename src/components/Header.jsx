@@ -14,7 +14,7 @@ export const Header = () => {
           {
             method: "GET",
             headers: {
-              Authorization: "Bearer " + process.env.ACCESS_TOKEN,
+              Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
             },
           },
         );
@@ -23,7 +23,7 @@ export const Header = () => {
 
         console.log(data);
 
-        setMovies(data.results);
+        setMovies(data.results || []);
 
         setIsLoading(false);
       } catch (err) {
@@ -36,7 +36,7 @@ export const Header = () => {
     getMovies();
   }, []);
 
-  if (isLoading || movies.length === 0) return null;
+  if (isLoading || !movies || movies.length === 0) return null;
   const movie = movies[currentIndex];
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % movies.length);

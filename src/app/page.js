@@ -18,8 +18,8 @@ const page = () => {
   return (
     <div>
       <Navbar />
-     <Header />
-      
+      <Header />
+
       <UpcomingMovies />
       <PopularMovies />
       <TopRatedMovies />

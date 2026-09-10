@@ -14,16 +14,14 @@ export const PopularMovies = () => {
           {
             method: "GET",
             headers: {
-              Authorization: "Bearer " + process.env.ACCESS_TOKEN,
+              Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
             },
           },
         );
 
         const data = await response.json();
 
-        console.log(data);
-
-        setMovies(data.results.slice(0, 10));
+        setMovies(data.results?.slice(0, 10) || []);
 
         setIsLoading(false);
       } catch (err) {

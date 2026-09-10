@@ -4,17 +4,15 @@ import { useParams } from "next/navigation";
 import { MovieCard } from "@/components/MovieCard";
 
 const GenrePage = () => {
-    const { id } = useParams();
-    const [movies, setMovies] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const { id } = useParams();
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-   
-
-  useEffect (() => {
+  useEffect(() => {
     const getMoviesByGenre = async () => {
       try {
         const response = await fetch(
-          "https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds}&page=${page}",
+          `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds}&page=${page}`,
           {
             method: "GET",
             headers: {
@@ -27,28 +25,26 @@ const GenrePage = () => {
 
         console.log(data);
 
-        setMovies(data.results);
-
+        setMovies(data.results || []);
       } catch (err) {
         console.error(err);
-     } finally {
+      } finally {
         setIsLoading(false);
-     }
+      }
     };
 
     getMoviesByGenre();
   }, [id]);
 
-  if(isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="grid grid-cols-5 gap-4 p-8">
-        {movies.map((movie) => (
-            <MovieCard key={movie.id} {...movie} />
-        ))}
+      {movies.map((movie) => (
+        <MovieCard key={movie.id} {...movie} />
+      ))}
     </div>
   );
-  };
+};
 
-
-  export default GenrePage;
+export default GenrePage;
