@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Navigation } from "@/components/Navigation";
+import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Import } from "lucide-react";
 import { MovieCard } from "@/components/MovieCard";
 import MovieSection from "@/components/MovieSection";
 import { Footer } from "@/components/Footer";
-import { useRouter } from "next/navigation";
+
 import { PopularMovies } from "@/components/PopularMovies";
 import { TopRatedMovies } from "@/components/TopRatedMovies";
 import { UpcomingMovies } from "@/components/UpcomingMovies";

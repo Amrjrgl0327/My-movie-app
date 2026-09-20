@@ -52,11 +52,11 @@ export const Header = () => {
       <div className="flex flex-col items-start absolute -translate-10 top-48 mt-[220] ml-[140] mb-[158] gap-4  w-[404]  text-white">
         <p className="font-[Inter] text-[16] font-normal">Now Playing:</p>
         <h1 className="font-[Inter] text-[36px] font-bold">{movie.title}</h1>
-        <p className="flex gap-1 ml-1 mt-2">
+        <div className="flex gap-1 ml-1 mt-2">
           <img src="/star.png" />
 
           <p>{movie.vote_average.toFixed(1)} / 10</p>
-        </p>
+        </div>
         <p className="font-[Inter] text-[12] font-normal">{movie.overview}</p>
         <img className="w-[145] h-[40] rounded-md mb-[120]" src="/button.png" />
       </div>

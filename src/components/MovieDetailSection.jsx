@@ -1,0 +1,61 @@
+"use client";
+import { useState, useEffect } from "react";
+import { MovieCard } from "./MovieCard";
+import Link from "next/link";
+
+export const MovieDetailSection = ({ movieId }) => {
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!movieId) return;
+
+    const getMovies = async () => {
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=1`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
+            },
+          },
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+        setMovies(data.results?.slice(0, 5) || []);
+
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+
+        setIsLoading(false);
+      }
+    };
+
+    getMovies();
+  }, [movieId]);
+
+  return (
+    <div className="w-full flex flex-col gap-4">
+      <div className="flex justify-between items-center p-20">
+        <h1 className="text-3xl font-bold mt-10px">More like this</h1>
+        <Link href="/movie/">
+          <img src="/Button (1).png" />
+        </Link>
+      </div>
+      {isLoading && <div>Loading...</div>}
+
+      {!isLoading && (
+        <div className="grid grid-cols-5 gap-4">
+          {movies.map((movie) => {
+            return <MovieCard key={movie.id} {...movie} />;
+          })}
+        </div>
+      )}
+    </div>
+  );
+};

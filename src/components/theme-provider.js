@@ -4,9 +4,5 @@ import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function ThemeProvider({ children, ...props }) {
-  return (
-    <NextThemesProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {children}
-    </NextThemesProvider>
-  );
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
