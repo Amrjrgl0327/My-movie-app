@@ -40,7 +40,7 @@ export const TopRatedMovies = () => {
     <div className="w-full flex flex-col gap-6">
       <div className="flex justify-between items-center p-20">
         <h1 className="text-3xl font-bold mt-10px">Top Rated</h1>
-        <Link href="/movie/popular">
+        <Link href="/movie/toprated">
           <img src="/Button (1).png" />
         </Link>
       </div>

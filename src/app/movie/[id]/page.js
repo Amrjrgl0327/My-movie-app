@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import React from "react";
 import MovieDetails from "@/components/MovieDetails";
-import { formatDate, formatRuntime, cn } from "@/lib/utils";
+
 import { MovieDetailSection } from "@/components/MovieDetailSection";
 const Page = () => {
   const params = useParams();
@@ -68,14 +68,15 @@ const Page = () => {
         const similarData = await similarResponse.json();
 
         setMovie(detailsData);
+        console.log("detailsData", detailsData);
         setCredits(creditsData);
         setSimilar(similarData);
         setIsLoading(false);
 
-        const certData = await certRes.json();
-        const usRelease = certData.results.find((r) => r.iso_3166_1 === `US`);
-        const cert = usRelease?.release_dates[0]?.certification || `NR`;
-        setCertification(cert);
+        // const certData = await certRes.json();
+        // const usRelease = certData?.results?.find((r) => r.iso_3166_1 === `US`);
+        // const cert = usRelease?.release_dates[0]?.certification || `NR`;
+        // setCertification(cert);
       } catch (err) {
         console.error(err);
         setIsLoading(false);
@@ -84,6 +85,7 @@ const Page = () => {
 
     fetchMovieDetail();
   }, [movieId]);
+
   if (isLoading || !movie) return <div>Loading...</div>;
 
   return (
@@ -93,19 +95,27 @@ const Page = () => {
       <div className="flex justify-end  gap-1 mr-[180]">
         <h1>Rating</h1>
         <img src="/star.png" className="w-4 h-4" alt="star" />
-        {movie.vote_average.toFixed(1)} / 10
+        {movie?.vote_average?.toFixed(1) ?? "N/A"} / 10
       </div>
 
       <div className=" flex flex-col gap-8 ">
         <div className="flex gap-8 p-45">
           <img
-            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-            alt={movie.title}
+            src={
+              movie?.poster_path
+                ? `https://image.tmdb.org/t/p/original${movie.poster_path}`
+                : "/no-poster.png"
+            }
+            alt={movie?.title}
             className="h-[560] w-[320] object-cover rounded-lg"
           />
           <img
-            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-            alt={movie.title}
+            src={
+              movie?.backdrop_path
+                ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                : "/no-backdrop.png"
+            }
+            alt={movie?.title}
             className="w-[760] h-[560] flex-1 object-cover rounded-lg"
           />
         </div>

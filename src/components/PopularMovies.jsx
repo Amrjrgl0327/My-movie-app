@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { MovieCard } from "./MovieCard";
 import Link from "next/link";
-
+console.log("helo popular");
 export const PopularMovies = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +33,7 @@ export const PopularMovies = () => {
 
     getMovies();
   }, []);
+  console.log("movie", movies);
 
   return (
     <div className="w-full flex flex-col gap-6">

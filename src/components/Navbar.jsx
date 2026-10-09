@@ -25,7 +25,7 @@ import { ModeToggle } from "./ModeToggle";
 import { useGenres } from "@/hooks/useGenres";
 
 export const Navbar = () => {
-  const { genres } = useGenres();
+  const [genres, setGenres] = useState([]);
   const router = useRouter();
   const handleGenreClick = (id) => {
     router.push(`/genre/${id}`);
