@@ -1,13 +1,15 @@
-import { formatDate, formatRuntime } from "@/lib/utils";
+//import { formatDate, formatRuntime } from "@/lib/utils";
 
 function MovieDetails({ movie, certification }) {
   return (
     <div className="flex flex-col mt-[50] ml-[180]">
       <h1 className="font-bold text-4xl">{movie.title}</h1>
-      <div>
-        {formatDate(movie.release_date)}
-        {certification}
-        {formatRuntime(movie.runtime)}
+      <div className="flex gap-2 items-center">
+        {/* <span>{formatDate(movie.release_date)}</span>
+        <span>·</span>
+        <span>{certification}</span>
+        <span>·</span>
+        <span>{formatRuntime(movie.runtime)}</span> */}
       </div>
 
       <div className="flex gap-2 mt-2">

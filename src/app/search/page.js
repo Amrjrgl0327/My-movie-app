@@ -72,7 +72,33 @@ const SearchResults = () => {
           <div className="flex-1">
             {isLoading && <div>Loading...</div>}
 
-            {!isLoading && movies.length === 0 && <div>Илэрц олдсонгүй.</div>}
+            {!isLoading && movies.length === 0 && (
+              <div className="flex justify-center items-center border-2 rounded-l-lg w-[804] h-[95]">
+                Not results found
+              </div>
+            )}
+
+            {!isLoading && totalPages > 1 && (
+              <div className="flex items-center justify-center gap-4 mt-10">
+                <button
+                  onClick={() => goToPage(pageParam - 1)}
+                  disabled={pageParam <= 1}
+                  className="flex items-center gap-1 disabled:opacity-40"
+                >
+                  ‹ Previous
+                </button>
+
+                <span className="px-3 py-1 border rounded">{pageParam}</span>
+
+                <button
+                  onClick={() => goToPage(pageParam + 1)}
+                  disabled={pageParam >= totalPages}
+                  className="flex items-center gap-1 disabled:opacity-40"
+                >
+                  Next ›
+                </button>
+              </div>
+            )}
 
             {!isLoading && movies.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { MovieCard } from "../MovieCard";
+import { MovieCard } from "../../../components/MovieCard";
+
 
 const Page = () => {
   const [movies, setMovies] = useState([]);
@@ -11,35 +12,40 @@ const Page = () => {
     if (page === 1) return;
     setPage(page - 1);
   };
+
   const handleNext = () => {
     setPage(page + 1);
   };
 
   useEffect(() => {
     const getMovies = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/movie/popular?page=${page}&lang=en-US`,
+          `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
           {
             method: "GET",
             headers: {
-              Authorization: "Bearer" + process.env.ACCESS_TOKEN,
+              Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
             },
           },
         );
 
-        const data = await res.json();
+        const data = await response.json();
 
-        console.log(data.results);
+        console.log(" popular data", data.results);
+
+        setMovies(data.results || []);
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
-        setMovies(data.results);
         setIsLoading(false);
       }
-
-      getMovies();
     };
+
+    getMovies();
   }, [page]);
+  console.log("movie", movies);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -52,12 +58,18 @@ const Page = () => {
           return <MovieCard key={movie.id} {...movie} />;
         })}
       </div>
+
       <div className="flex gap-3">
-        <div onClick={handlePrev}>Prev</div>
+        <div onClick={handlePrev} className="cursor-pointer">
+          Prev
+        </div>
         <div>{page}</div>
-        <div onClick={handleNext}>Next</div>
+        <div onClick={handleNext} className="cursor-pointer">
+          Next
+        </div>
       </div>
     </div>
   );
 };
+
 export default Page;
