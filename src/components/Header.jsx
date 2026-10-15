@@ -4,8 +4,11 @@ import { Button } from "@base-ui/react";
 
 export const Header = () => {
   const [movies, setMovies] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState([0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [trailerKey, setTrailerKey] = useState(null);
+  const [showTrailer, setShowTrailer] = useState(false);
+
   useEffect(() => {
     const getMovies = async () => {
       try {
@@ -42,6 +45,32 @@ export const Header = () => {
     setCurrentIndex((prev) => (prev + 1) % movies.length);
   };
 
+  const handleWatchTrailer = async () => {
+    try {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/movie/${movie.id}/videos?language=en-US`,
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
+          },
+        },
+      );
+
+      const data = await res.json();
+
+      const trailer =
+        data.results?.find(
+          (v) => v.site === "YouTube" && v.type === "Trailer",
+        ) || data.results?.find((v) => v.site === "YouTube");
+      if (trailer) {
+        setTrailerKey(trailer.key);
+        setShowTrailer(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="w-screen h-fit relative object-cover">
       <img
@@ -58,7 +87,13 @@ export const Header = () => {
           <p>{movie.vote_average.toFixed(1)} / 10</p>
         </div>
         <p className="font-[Inter] text-[12] font-normal">{movie.overview}</p>
-        <img className="w-[145] h-[40] rounded-md mb-[120]" src="/button.png" />
+        <Button
+          type="button"
+          onClick={handleWatchTrailer}
+          className="relative z-20 mb-[120] cursor-pointer"
+        >
+          <img className="w-[145] h-[40] rounded-md" src="/button.png" />
+        </Button>
       </div>
       <div>
         <Button
@@ -71,6 +106,30 @@ export const Header = () => {
           />
         </Button>
       </div>
+      {showTrailer && trailerKey && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setShowTrailer(false)}
+        >
+          <div
+            className="relative w-[80vw] max-w-[900] aspect-video"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowTrailer(false)}
+              className="absolute -top-10 right-0 text-white text-2xl"
+            >
+              ✕
+            </button>
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,12 +1,3 @@
-// export const Grid = () => {
-//   return (
-//     <div className="flex justify-between py-12 px-20">
-//       <h1 className="w-[114] h-[32] font-bold size-24">Upcoming</h1>
-//       <img src="/Button (1).png" />
-//     </div>
-//   );
-// };
-
 const data = [
   {
     text: "Upcoming",

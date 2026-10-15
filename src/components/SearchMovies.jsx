@@ -125,7 +125,7 @@ export const SearchMovies = () => {
                   </p>
                 </div>
                 <Link
-                  href={`/movie/${movie.id}`}
+                  href={`/movie`}
                   className="text-sm text-blue-600 whitespace-nowrap flex items-center gap-1"
                   onClick={() => setIsOpen(false)}
                 >

@@ -37,22 +37,23 @@ export const UpcomingMovies = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <div className="flex justify-between items-center p-20">
-        <h1 className="text-3xl font-bold mt-10px">Upcoming</h1>
+    <section className="max-w-[1280] mx-auto px-5 flex flex-col gap-6 my-10">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Upcoming</h2>
         <Link href="/movie/upcoming">
-          <img src="/Button (1).png" />
+          <img src="/Button (1).png" alt="See more" />
         </Link>
       </div>
+
       {isLoading && <div>Loading...</div>}
 
       {!isLoading && (
-        <div className="grid grid-cols-5 gap-4">
-          {movies.map((movie) => {
-            return <MovieCard key={movie.id} {...movie} />;
-          })}
+        <div className="grid grid-cols-5 gap-8">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} {...movie} className="w-full" />
+          ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };
