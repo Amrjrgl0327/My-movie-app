@@ -6,53 +6,56 @@ import Link from "next/link";
 export const TopRatedMovies = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response = await fetch(
-          "https://api.themoviedb.org/3/movie/top_rated",
-          {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
-            },
+
+  const getMovies = async () => {
+    try {
+      const response = await fetch(
+        "https://api.themoviedb.org/3/movie/top_rated",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + process.env.NEXT_PUBLIC_ACCESS_TOKEN,
           },
-        );
+        },
+      );
 
-        const data = await response.json();
+      const data = await response.json();
 
-        console.log(data);
+      console.log(data);
 
-        setMovies(data.results?.slice(0, 10) || []);
+      setMovies(data.results?.slice(0, 10) || []);
 
-        setIsLoading(false);
-      } catch (err) {
-        console.error(err);
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err);
 
-        setIsLoading(false);
-      }
-    };
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     getMovies();
   }, []);
 
+  console.log("movies", movies);
   return (
-    <div className="w-full flex flex-col gap-6">
-      <div className="flex justify-between items-center p-20">
-        <h1 className="text-3xl font-bold mt-10px">Top Rated</h1>
+    <section className="max-w-[1280] mx-auto px-5 flex flex-col gap-6 my-10">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Top Rated</h2>
         <Link href="/movie/toprated">
-          <img src="/Button (1).png" />
+          <img src="/Button (1).png" alt="See more" />
         </Link>
       </div>
+
       {isLoading && <div>Loading...</div>}
 
       {!isLoading && (
-        <div className="grid grid-cols-5 gap-4">
-          {movies.map((movie) => {
-            return <MovieCard key={movie.id} {...movie} />;
-          })}
+        <div className="grid grid-cols-5 gap-8">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} {...movie} className="w-full" />
+          ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };

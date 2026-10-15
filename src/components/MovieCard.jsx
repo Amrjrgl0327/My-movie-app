@@ -2,30 +2,39 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const MovieCard = (props) => {
+export const MovieCard = ({
+  id,
+  title,
+  poster_path,
+  vote_average,
+  className = "w-full",
+}) => {
   return (
     <Link
-      href={`/movie/${props.id}`}
-      className="flex flex-col w-35px h-110px p-20 mt-14px"
+      href={`/movie/${id}`}
+      className={`flex flex-col rounded-lg overflow-hidden bg-gray-200 dark:bg-zinc-800 ${className}`}
     >
-      <div className="w-35px h-110px aspect-3/4 relative rounded-lg shadow overflow-hidden">
+      <div className="relative w-full aspect-2/3">
         <Image
-          alt={props.title}
+          src={
+            poster_path
+              ? `https://image.tmdb.org/t/p/w500${poster_path}`
+              : "/no-poster.png"
+          }
+          alt={title}
           fill
-          className=" w-[165] h-350 rounded-lg object-cover"
-          src={"https://image.tmdb.org/t/p/w500" + props.poster_path}
+          sizes="(max-width: 768px) 50vw, 200px"
+          className="object-cover"
         />
       </div>
-      <div className="w-35px h-25px bg-gray-200">
-        <p className="flex gap-1 ml-1 mt-2 ">
+
+      <div className="p-2 flex flex-col gap-1">
+        <p className="flex items-center gap-1 text-sm">
           <img src="/star.png" className="w-4 h-4" alt="star" />
-          <span>{props.vote_average?.toFixed(1)}</span>
-          <span className="text-muted-foreground items-center justify-center">
-            {" "}
-            /10{" "}
-          </span>
+          <span>{vote_average?.toFixed(1)}</span>
+          <span className="text-muted-foreground">/10</span>
         </p>
-        <p className="flex items-center ml-2 truncate">{props.title}</p>
+        <p className="text-sm line-clamp-2">{title}</p>
       </div>
     </Link>
   );

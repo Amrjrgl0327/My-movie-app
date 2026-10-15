@@ -1,33 +1,21 @@
 "use client";
-import React from "react";
+import Link from "next/link";
 import { MovieCard } from "./MovieCard";
 
-const MovieSection = ({
-  sectionName,
-  upcoming,
-  popular,
-  top_Rated,
-  movieData,
-}) => {
+const MovieSection = ({ sectionName, movieData = [], href }) => {
   return (
-    <div className="w-screen px-[80]">
-      <div className="flex w-full justify-between">
-        <p>{sectionName}</p>
+    <section className="max-w-[1280] mx-auto px-5 flex flex-col gap-6 my-10">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">{sectionName}</h2>
+        {href && <Link href={href}>See more →</Link>}
       </div>
-      <div className="flex gap-8 flex-wrap">
-        {movieData.map((movie) => {
-          return (
-            <MovieCard
-              key={movie.id}
-              imgSrc={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-              rating={Math.floor(movie.vote_average)}
-              title={movie.original_title}
-              id={movie.id}
-            />
-          );
-        })}
+
+      <div className="grid grid-cols-5 gap-8">
+        {movieData.map((movie) => (
+          <MovieCard key={movie.id} {...movie} className="w-full" />
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 

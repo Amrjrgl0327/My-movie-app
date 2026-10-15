@@ -20,6 +20,8 @@ const SearchResults = () => {
   useEffect(() => {
     if (!query) {
       setMovies([]);
+      setTotalResults(0);
+      setTotalPages(1);
       setIsLoading(false);
       return;
     }
@@ -40,9 +42,9 @@ const SearchResults = () => {
         setMovies(data.results?.slice(0, 10) || []);
         setTotalResults(data.total_results || 0);
         setTotalPages(data.total_pages || 1);
-        setIsLoading(false);
       } catch (err) {
         console.error(err);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -56,11 +58,12 @@ const SearchResults = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="container mx-auto flex flex-col gap-25">
+
+      <main className="flex-1 w-full max-w-[1080] mx-auto px-5 py-10 flex flex-col gap-8">
         <div>
-          <h1 className="text-2xl font-bold">Search results</h1>
+          <h1 className="text-2xl font-semibold">Search results</h1>
           {!isLoading && (
             <p className="text-muted-foreground mt-1">
               {totalResults} results for &quot;{query}&quot;
@@ -68,62 +71,38 @@ const SearchResults = () => {
           )}
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1 flex flex-col gap-8">
             {isLoading && <div>Loading...</div>}
 
             {!isLoading && movies.length === 0 && (
-              <div className="flex justify-center items-center border-2 rounded-l-lg w-[804] h-[95]">
-                Not results found
-              </div>
-            )}
-
-            {!isLoading && totalPages > 1 && (
-              <div className="flex items-center justify-center gap-4 mt-10">
-                <button
-                  onClick={() => goToPage(pageParam - 1)}
-                  disabled={pageParam <= 1}
-                  className="flex items-center gap-1 disabled:opacity-40"
-                >
-                  ‹ Previous
-                </button>
-
-                <span className="px-3 py-1 border rounded">{pageParam}</span>
-
-                <button
-                  onClick={() => goToPage(pageParam + 1)}
-                  disabled={pageParam >= totalPages}
-                  className="flex items-center gap-1 disabled:opacity-40"
-                >
-                  Next ›
-                </button>
+              <div className="flex justify-center items-center border rounded-lg h-24 text-sm">
+                No results found.
               </div>
             )}
 
             {!isLoading && movies.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {movies.map((movie) => (
-                  <MovieCard key={movie.id} {...movie} />
+                  <MovieCard key={movie.id} {...movie} className="w-full" />
                 ))}
               </div>
             )}
 
-            {!isLoading && totalPages > 1 && (
-              <div className="flex items-center justify-center gap-4 mt-10">
+            {!isLoading && (
+              <div className="flex items-center justify-end gap-3 text-sm">
                 <button
                   onClick={() => goToPage(pageParam - 1)}
                   disabled={pageParam <= 1}
-                  className="flex items-center gap-1 disabled:opacity-40"
+                  className="disabled:opacity-40"
                 >
                   ‹ Previous
                 </button>
-
                 <span className="px-3 py-1 border rounded">{pageParam}</span>
-
                 <button
                   onClick={() => goToPage(pageParam + 1)}
                   disabled={pageParam >= totalPages}
-                  className="flex items-center gap-1 disabled:opacity-40"
+                  className="disabled:opacity-40"
                 >
                   Next ›
                 </button>
@@ -131,9 +110,12 @@ const SearchResults = () => {
             )}
           </div>
 
-          <GenreSidebar />
+          <div className="lg:w-[340] lg:border-l lg:pl-8">
+            <GenreSidebar />
+          </div>
         </div>
-      </div>
+      </main>
+
       <Footer />
     </div>
   );
@@ -141,7 +123,7 @@ const SearchResults = () => {
 
 const Page = () => {
   return (
-    <Suspense fallback={<div className="p-20">Loading...</div>}>
+    <Suspense fallback={<div className="p-5">Loading...</div>}>
       <SearchResults />
     </Suspense>
   );
